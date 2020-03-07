@@ -8,12 +8,13 @@ CELL_SIZE = 10
 WHITE = (255, 255, 255)
 GREEN = (0, 255, 0)
 RED = (255, 0, 0)
-BLUE = (0,0,255)
+BLUE = (0, 0, 255)
 clist = []
-HEIGHT_INFORM_PANEL = 50
-blue_cell = False # set True if want play life with blue cell
-                    # blue cell create when neigbour = 4
+HEIGHT_INFORM_PANEL = 0 # размер информационной панели
+blue_cell = False  # set True if want play life with blue cell
 
+
+# blue cell create when neigbour = 4
 
 
 class GameOfLife:
@@ -24,7 +25,7 @@ class GameOfLife:
         self.generation = 0
 
         # Setup window size
-        self.screen_size = widht, height + HEIGHT_INFORM_PANEL
+        self.screen_size = widht, height + HEIGHT_INFORM_PANEL # create  window with size w,h + iform panel
 
         # create new window
         self.screen = pygame.display.set_mode(self.screen_size)
@@ -36,17 +37,15 @@ class GameOfLife:
         # speed of game
         self.speed = speed
 
-
     # def draw_information_panel(self):
     #     """ Write on bottom information"""
     #     input1 = pygame.InputBox(50, self.height + 25, 75, self.height+35)
-
 
     def draw_grid(self):
         for x in range(0, self.width, self.cell_size):
             pygame.draw.line(self.screen, pygame.Color('black'),
                              (x, 0), (x, self.width))
-        for y in range(0, self.height+1*self.cell_size, self.cell_size):
+        for y in range(0, self.height + 1 * self.cell_size, self.cell_size):
             pygame.draw.line(self.screen, pygame.Color('black'),
                              (0, y), (self.height, y))
 
@@ -70,15 +69,16 @@ class GameOfLife:
         else:
             return [[0] * (self.height // self.cell_size) for i in range(self.width // self.cell_size)]
             # return [[0, 0, 0, 0, 0], [0, 0, 1, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0]]
+
     def draw_cell_list(self, rects):
         for row in range(len(rects)):
             for col in range(len(rects[row])):
                 if rects[row][col] == 1:
                     pygame.draw.rect(self.screen, GREEN, (
-                        col * self.cell_size+1, row * self.cell_size+1 , self.cell_size - 1, self.cell_size - 1))
+                        col * self.cell_size + 1, row * self.cell_size + 1, self.cell_size - 1, self.cell_size - 1))
                 elif rects[row][col] == 0:
                     pygame.draw.rect(self.screen, WHITE, (
-                        col * self.cell_size +1, row * self.cell_size+1 , self.cell_size - 1, self.cell_size - 1))
+                        col * self.cell_size + 1, row * self.cell_size + 1, self.cell_size - 1, self.cell_size - 1))
                 elif rects[row][col] == 2 and blue_cell:
                     pygame.draw.rect(self.screen, BLUE, (
                         col * self.cell_size + 1, row * self.cell_size + 1, self.cell_size - 1, self.cell_size - 1))
@@ -99,12 +99,12 @@ class GameOfLife:
         t = False
         while t:
             for _ in range(n_cell):
-                col = int(random.random()*self.width//self.cell_size)
-                row = int(random.random()*self.height//self.cell_size)
+                col = int(random.random() * self.width // self.cell_size)
+                row = int(random.random() * self.height // self.cell_size)
                 if clist[col][row] == 0:
                     # print('col {} row {}'.format(col,row))
                     clist[row][col] = 1
-                    t =False
+                    t = False
                     pygame.draw.rect(self.screen, RED, (
                         col * self.cell_size + 1, row * self.cell_size + 1, self.cell_size - 1, self.cell_size - 1))
         pygame.display.flip()
@@ -120,7 +120,7 @@ class GameOfLife:
                 for n, m in [(-1, 1), (-1, -1), (-1, 0), (1, 1), (0, -1), (0, 1), (1, -1), (1, 0)]:
                     if cell_list[i + n][j + m] == 1:
                         neigbours += 1
-                    if cell_list[i + n][j + m] == 2: #blue
+                    if cell_list[i + n][j + m] == 2:  # blue
                         neigbours_blue += 1
                 if neigbours == 3:
                     new_cell_list[i][j] = 1
@@ -146,14 +146,14 @@ class GameOfLife:
 
         pygame.init()
         clock = pygame.time.Clock()
-        # self.draw_information_panel() //
+        # self.draw_information_panel() // панель для вывода информации
         pygame.display.set_caption('Game of Life')
         self.screen.fill(pygame.Color('white'))
         running = True
         clist = self.cell_list(randomize=True)
         paused = True
         time_for_new_cell = 0
-        n_cell = (self.height//self.cell_size *self.width//self.cell_size)//5000 #num of new cell in cel
+        n_cell = (self.height // self.cell_size * self.width // self.cell_size) // 5000  # num of new cell in cel
         while running:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -165,7 +165,8 @@ class GameOfLife:
                     if event.key == pygame.K_p:
                         if paused:
                             paused = False
-                        else: paused = True
+                        else:
+                            paused = True
 
             self.draw_grid()
             self.draw_cell_list(clist)
@@ -177,12 +178,12 @@ class GameOfLife:
 
             if time_for_new_cell > 100:
                 time_for_new_cell = 0
-                self.new_random_live_cell(clist,n_cell) # CREATE new rand GREEN cell
+                self.new_random_live_cell(clist, n_cell)  # CREATE new rand GREEN cell
 
             clock.tick(self.speed)
         pygame.quit()
 
 
 if __name__ == '__main__':
-    game = GameOfLife(440, 480, 20, speed=20)
+    game = GameOfLife(400, 400, 20, speed=20)
     game.run()
