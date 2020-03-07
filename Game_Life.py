@@ -146,7 +146,7 @@ class GameOfLife:
 
         pygame.init()
         clock = pygame.time.Clock()
-        # self.draw_information_panel()
+        # self.draw_information_panel() //
         pygame.display.set_caption('Game of Life')
         self.screen.fill(pygame.Color('white'))
         running = True
@@ -184,5 +184,5 @@ class GameOfLife:
 
 
 if __name__ == '__main__':
-    game = GameOfLife(1000, 1000, 5, speed=20)
+    game = GameOfLife(440, 480, 20, speed=20)
     game.run()
