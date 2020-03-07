@@ -4,7 +4,7 @@ from Settings import *
 import time
 
 
-def possible(list_of_num, n, x, y):
+def possible(list_of_num, n, x, y): # is possible for num in cell
     for i in range(0, 9):
         if list_of_num[y][i] == n:
             return False
